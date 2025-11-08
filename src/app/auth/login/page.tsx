@@ -5,7 +5,8 @@ import { SignUpTab } from "./_components/sign-up-tab";
 
 export default function LoginPage() {
   return (
-    <Tabs defaultValue="signin" className="mx-auto w-full my-6 px-4">
+    <div className="flex h-screen flex-1 justify-center items-center">
+        <Tabs defaultValue="signin" className="mx-auto w-[500px] my-6 px-4">
       <TabsList>
         <TabsTrigger value="signin">Sign in</TabsTrigger>
         <TabsTrigger value="signup">Sign up</TabsTrigger>
@@ -29,5 +30,6 @@ export default function LoginPage() {
         </TabsContent>
       </Card>
     </Tabs>
+    </div>
   );
 }
