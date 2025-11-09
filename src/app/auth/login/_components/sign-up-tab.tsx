@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/ui/loading-swap";
+import { authClient } from "@/lib/auth-client";
 
 const signUpSchema = z.object({
   name: z.string().min(3),
@@ -34,8 +35,13 @@ export function SignUpTab() {
     },
   });
 
-  function handleSignUp(data: SignUpForm) {
-    console.log(data);
+  async function handleSignUp(data: SignUpForm) {
+    const res = await authClient.signUp.email({...data, callbackURL: "/"}, {
+      onError: (error) => {
+        
+      },
+    });
+    
   }
 
   const isSubmitting = form.formState.isSubmitting;
