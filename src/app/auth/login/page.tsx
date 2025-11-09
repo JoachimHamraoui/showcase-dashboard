@@ -6,30 +6,32 @@ import { SignUpTab } from "./_components/sign-up-tab";
 export default function LoginPage() {
   return (
     <div className="flex h-screen flex-1 justify-center items-center">
-        <Tabs defaultValue="signin" className="mx-auto w-[500px] my-6 px-4">
-      <TabsList>
-        <TabsTrigger value="signin">Sign in</TabsTrigger>
-        <TabsTrigger value="signup">Sign up</TabsTrigger>
-      </TabsList>
-      <Card>
+      <Tabs defaultValue="signin" className="mx-auto w-[500px] my-6 px-4">
+        <TabsList>
+          <TabsTrigger value="signin">Sign in</TabsTrigger>
+          <TabsTrigger value="signup">Sign up</TabsTrigger>
+        </TabsList>
         <TabsContent value="signin">
-          <CardHeader className="text-2xl font-bold">
-            <CardTitle>Sign in</CardTitle>
+          <Card>
+            <CardHeader className="text-2xl font-bold">
+              <CardTitle>Sign in</CardTitle>
+            </CardHeader>
             <CardContent>
               <SignInTab />
             </CardContent>
-          </CardHeader>
+          </Card>
         </TabsContent>
         <TabsContent value="signup">
-          <CardHeader className="text-2xl font-bold">
-            <CardTitle>Sign up</CardTitle>
+          <Card>
+            <CardHeader className="text-2xl font-bold">
+              <CardTitle>Sign up</CardTitle>
+            </CardHeader>
             <CardContent>
               <SignUpTab />
             </CardContent>
-          </CardHeader>
+          </Card>
         </TabsContent>
-      </Card>
-    </Tabs>
+      </Tabs>
     </div>
   );
 }
