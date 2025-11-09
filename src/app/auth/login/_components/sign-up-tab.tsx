@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/ui/loading-swap";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 const signUpSchema = z.object({
   name: z.string().min(3),
@@ -36,6 +36,8 @@ export function SignUpTab() {
       password: "",
     },
   });
+
+    const router = useRouter();
 
   async function handleSignUp(data: SignUpForm) {
     await authClient.signUp.email(
