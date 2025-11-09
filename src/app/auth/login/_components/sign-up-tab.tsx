@@ -16,6 +16,8 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/ui/loading-swap";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import router from "next/router";
 
 const signUpSchema = z.object({
   name: z.string().min(3),
@@ -36,12 +38,18 @@ export function SignUpTab() {
   });
 
   async function handleSignUp(data: SignUpForm) {
-    const res = await authClient.signUp.email({...data, callbackURL: "/"}, {
-      onError: (error) => {
-        
-      },
-    });
-    
+    await authClient.signUp.email(
+      { ...data, callbackURL: "/" },
+      {
+        onError: (error) => {
+          toast.error(error.error.message || "Failed to sign up");
+        },
+        onSuccess: () => {
+          toast.success("Sign up successful");
+          router.push("/");
+        },
+      }
+    );
   }
 
   const isSubmitting = form.formState.isSubmitting;
@@ -57,7 +65,7 @@ export function SignUpTab() {
               <FormControl>
                 <Input placeholder="John Doe" {...field}></Input>
               </FormControl>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -92,9 +100,9 @@ export function SignUpTab() {
           )}
         />
         <Button type="submit" disabled={isSubmitting} className="w-full">
-            <LoadingSwap isLoading={isSubmitting}>
-                <span>Sign Up</span>
-            </LoadingSwap>  
+          <LoadingSwap isLoading={isSubmitting}>
+            <span>Sign Up</span>
+          </LoadingSwap>
         </Button>
       </form>
     </Form>
