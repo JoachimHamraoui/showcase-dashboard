@@ -28,14 +28,17 @@ export default function Home() {
           </>
         ) : (
           <>
-            <h1 className="text-3xl font-bold">Welcome {session.user.name}</h1>
+            {/* <h1 className="text-3xl font-bold">Welcome {session.user.name}</h1>
             <Button
               size="lg"
               variant="destructive"
               onClick={() => authClient.signOut()}
             >
               Log out
-            </Button>
+            </Button> */}
+            <div className="">
+
+            </div>
           </>
         )}
       </div>
