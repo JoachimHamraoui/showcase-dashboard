@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { ProjectsList } from "../components/ProjectsList";
@@ -48,8 +48,8 @@ export default function Dashboard() {
                       Manage your projects right here
                     </CardDescription>
                   </div>
-                  <Link href="/dashboard/invoices/create">
-                    <PlusIcon /> Create Invoice
+                  <Link className={buttonVariants()} href="/dashboard/invoices/create">
+                    <PlusIcon /> Create Project
                   </Link>
                 </div>
               </CardHeader>
