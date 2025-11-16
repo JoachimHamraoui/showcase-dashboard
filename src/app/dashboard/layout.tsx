@@ -16,16 +16,14 @@ export default async function DashboardLayout({
         <div className="flex flex-col max-h-screen h-full gap-2">
           <div className="flex items-center border-b px-4 lg:h-[60px]">
             <Link href="/">
-              <h1 className="text-lg font-bold">
-                {session?.user?.name}&apos;s Dashboard
-              </h1>
+              <h1 className="text-lg font-bold">Dashboard</h1>
             </Link>
           </div>
           <div className="flex-1 flex-col justify-between">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <DashboardLinks />
             </nav>
-            <LogoutButton />
+
           </div>
         </div>
       </div>

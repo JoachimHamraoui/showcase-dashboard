@@ -3,7 +3,7 @@
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { LogOutIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -14,13 +14,12 @@ export function LogoutButton() {
   };
 
   return (
-    <Button
-      variant="link"
+    <Link href=""
       onClick={handleSignOut}
-      className="flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary"
+      className="flex gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary my-2"
     >
       <LogOutIcon size={20} />
       Log out
-    </Button>
+    </Link>
   );
 }
