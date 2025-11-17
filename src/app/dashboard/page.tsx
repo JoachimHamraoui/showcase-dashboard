@@ -30,14 +30,6 @@ export default function Dashboard() {
         </>
       ) : (
         <>
-          {/* <h1 className="text-3xl font-bold">Welcome {session.user.name}</h1>
-            <Button
-              size="lg"
-              variant="destructive"
-              onClick={() => authClient.signOut()}
-            >
-              Log out
-            </Button> */}
           <div className="w-8/10 h-[500px] mt-24">
             <Card>
               <CardHeader>
@@ -48,7 +40,7 @@ export default function Dashboard() {
                       Manage your projects right here
                     </CardDescription>
                   </div>
-                  <Link className={buttonVariants()} href="/dashboard/invoices/create">
+                  <Link className={buttonVariants()} href="/dashboard/projects/create">
                     <PlusIcon /> Create Project
                   </Link>
                 </div>
