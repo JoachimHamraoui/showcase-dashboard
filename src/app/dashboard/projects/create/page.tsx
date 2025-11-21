@@ -1,9 +1,11 @@
+import { CreateProjects } from "@/app/components/CreateProjects";
+
 export default function CreateProject() {
-    return (
-        <div className="my-6 px-4 max-w-md mx-auto">
-            <div className="text-center space-y-0">
-                <h1 className="text-3xl font-bold">Create Project</h1>
-            </div>
-        </div>
-    );
+  return (
+    <div className="w-full flex flex-col items-center">
+      <div className="w-8/10 h-[500px] mt-24">
+        <CreateProjects />
+      </div>
+    </div>
+  );
 }
