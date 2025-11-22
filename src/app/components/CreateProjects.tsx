@@ -24,7 +24,7 @@ const technologies = [
 
 export function CreateProjects() {
   const [techStack, setTechStack] = useState<Option[]>([]);
-
+    console.log(techStack)
   return (
     <Card>
       <CardHeader className="">
@@ -44,7 +44,7 @@ export function CreateProjects() {
           <Input name="live" placeholder="Live link" className="w-full" />
 
           {/* Tech Stack Selector */}
-          <div className="col-span-2">
+          <div className="w-full">
             <MultipleSelector
               className="w-full"
               defaultOptions={technologies}
