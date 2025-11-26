@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import { authClient } from "@/lib/auth-client";
 import { createProject } from "@/lib/actions";
+import { Upload } from "lucide-react";
 
 const technologies = [
   { value: "NextJS", label: "NextJS" },
@@ -83,25 +84,6 @@ export function CreateProjects() {
           <Input name="title" placeholder="Project name" />
           <Input name="description" placeholder="Project description" />
 
-          {/* Image uploader */}
-          <div className="col-span-2 flex flex-col gap-2">
-            <Input type="file" accept="image/*" onChange={handleImageUpload} />
-
-            {preview && (
-              <div className="relative w-full h-52">
-                <Image
-                  src={preview}
-                  alt="Preview"
-                  fill
-                  className="object-cover rounded-lg"
-                />
-              </div>
-            )}
-
-            {/* Hidden input to submit uploaded URL */}
-            <input type="hidden" name="image" value={imageUrl} />
-          </div>
-
           <Input name="github" placeholder="Github link" />
           <Input name="live" placeholder="Live link" />
 
@@ -121,6 +103,69 @@ export function CreateProjects() {
             name="techstack"
             value={JSON.stringify(techStack.map((t) => t.value))}
           />
+
+          {/* Image uploader */}
+          <div className="col-span-1 flex flex-col gap-2">
+            <label
+              htmlFor="file-upload"
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const file = e.dataTransfer.files?.[0];
+                if (file) {
+                  // Manually call your existing upload handler
+                  handleImageUpload({
+                    target: { files: [file] },
+                  } as unknown as React.ChangeEvent<HTMLInputElement>);
+                }
+              }}
+              className="
+      flex flex-col gap-2 items-center justify-center
+      border border-border rounded-xl cursor-pointer
+      p-8 text-center transition
+      hover:bg-muted/50 h-42
+    "
+            >
+              <div className="flex items-center justify-center w-14 h-14 rounded-full bg-muted">
+                <Upload className="h-6 w-6 opacity-80" />
+              </div>
+
+              <div>
+                <p className="text-sm font-medium">Upload your image</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Drag & drop or click to browse
+                </p>
+              </div>
+
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
+              />
+            </label>
+
+            <input type="hidden" name="image" value={imageUrl} />
+          </div>
+            <div className="col-span-1">
+              {!preview && <h2 className="text-lg font-bold text-primary">Preview</h2> }
+              {preview && (
+              <Image
+                src={preview}
+                alt="Preview"
+                width={300}
+                height={300}
+                className="w-auto h-42 object-cover rounded-lg"
+              />
+            )}
+            </div>
+
 
           {/* Hidden user ID */}
           {userId && <input type="hidden" name="userId" value={userId} />}
