@@ -72,6 +72,18 @@ export function CreateProjects() {
     setImageUrl(data.url); // store uploaded URL
   }
 
+  function resetFields() {
+    setTechStack([]);
+    setPreview(null);
+    setImageUrl("");
+
+    // also reset file input manually
+    const fileInput = document.getElementById(
+      "file-upload"
+    ) as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -80,7 +92,13 @@ export function CreateProjects() {
       </CardHeader>
 
       <CardContent className="grid gap-4 p-6">
-        <form action={createProject} className="grid grid-cols-2 gap-4 gap-y-6">
+        <form
+          action={async (formData) => {
+            await createProject(formData); // your server action
+            resetFields(); // <-- reset state after submitting
+          }}
+          className="grid grid-cols-2 gap-4 gap-y-6"
+        >
           <Input name="title" placeholder="Project name" />
           <Input name="description" placeholder="Project description" />
 
@@ -153,9 +171,11 @@ export function CreateProjects() {
 
             <input type="hidden" name="image" value={imageUrl} />
           </div>
-            <div className="col-span-1">
-              {!preview && <h2 className="text-lg font-bold text-primary">Preview</h2> }
-              {preview && (
+          <div className="col-span-1">
+            {!preview && (
+              <h2 className="text-lg font-bold text-primary">Preview</h2>
+            )}
+            {preview && (
               <Image
                 src={preview}
                 alt="Preview"
@@ -164,8 +184,7 @@ export function CreateProjects() {
                 className="w-auto h-42 object-cover rounded-lg"
               />
             )}
-            </div>
-
+          </div>
 
           {/* Hidden user ID */}
           {userId && <input type="hidden" name="userId" value={userId} />}
