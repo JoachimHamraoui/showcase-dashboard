@@ -16,6 +16,11 @@ import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import { authClient } from "@/lib/auth-client";
 import { createProject } from "@/lib/actions";
 import { Upload } from "lucide-react";
+import { useForm } from "react-hook-form";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoadingSwap } from "@/components/ui/loading-swap";
+import { createProjectSchema } from "@/lib/zod-schemas";
 
 const technologies = [
   { value: "NextJS", label: "NextJS" },
@@ -37,6 +42,9 @@ const technologies = [
   { value: "Typescript", label: "Typescript" },
 ];
 
+
+type CreateProjectForm = z.infer<typeof createProjectSchema>;
+
 export function CreateProjects() {
   const { data: session } = authClient.useSession();
   const userId = session?.user?.id as string;
@@ -44,6 +52,21 @@ export function CreateProjects() {
   const [techStack, setTechStack] = useState<Option[]>([]);
   const [imageUrl, setImageUrl] = useState<string>(""); // cloud URL
   const [preview, setPreview] = useState<string | null>(null); // local preview
+
+  const form = useForm<CreateProjectForm>({
+    resolver: zodResolver(createProjectSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      github: "",
+      live: "",
+      techstack: "",
+      image: "",
+      userId: userId || "",
+    },
+  });
+
+  const isSubmitting = form.formState.isSubmitting;
 
   // convert file → base64
   const toBase64 = (file: File): Promise<string> =>
@@ -186,11 +209,12 @@ export function CreateProjects() {
             )}
           </div>
 
-          {/* Hidden user ID */}
           {userId && <input type="hidden" name="userId" value={userId} />}
 
-          <Button type="submit" className="col-span-2">
-            Create Project
+          <Button type="submit" disabled={isSubmitting} className="w-full">
+            <LoadingSwap isLoading={isSubmitting}>
+              <span>Sign In</span>
+            </LoadingSwap>
           </Button>
         </form>
       </CardContent>

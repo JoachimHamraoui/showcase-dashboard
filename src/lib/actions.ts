@@ -1,31 +1,36 @@
 "use server";
+
 import { v4 as uuid } from "uuid";
 import { revalidatePath } from "next/cache";
 import { db } from "@/drizzle/db";
 import { project } from "@/drizzle/schemas/auth-schema";
+import { createProjectSchema } from "@/lib/zod-schemas"; // move schema outside client
 
 export async function createProject(formData: FormData) {
-    const name = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const keyImage = formData.get("image") as string;
-  const github = formData.get("github") as string;
-  const live = formData.get("live") as string;
-  const techstackRaw = formData.get("techstack") as string;
-  const techstack: string[] = JSON.parse(techstackRaw)
-  console.log(techstack);
+  // Convert to an object
+  const raw = Object.fromEntries(formData);
 
-  const userId = formData.get("userId") as string;
+  // Validate with Zod on the server
+  const parsed = createProjectSchema.safeParse(raw);
+  if (!parsed.success) {
+    console.log("❌ ZOD ERROR:", parsed.error.flatten());
+    return { error: parsed.error.flatten() }; // stops insert
+  }
+
+  const data = parsed.data;
 
   await db.insert(project).values({
     id: uuid(),
-    name,
-    description,
-    keyImage,
-    github,
-    live,
-    techstack, // ← this matches your schema (text[])
-    userId
+    name: data.title,
+    description: data.description,
+    keyImage: data.image,
+    github: data.github,
+    live: data.live,
+    techstack: data.techstack,
+    userId: data.userId,
   });
 
-  revalidatePath("/dashboard/projects"); // update UI
+  revalidatePath("/dashboard/projects");
+
+  return { success: true };
 }
