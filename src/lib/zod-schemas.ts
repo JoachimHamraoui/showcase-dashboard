@@ -26,7 +26,7 @@ export const createProjectSchema = z.object({
     }),
 
   // REQUIRED — must not be empty
-  image: z.string().min(1, "Image is required"),
+  keyImage: z.string().min(1, "Image is required"),
 
   userId: z.string().min(1, "User is required"),
 });

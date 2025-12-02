@@ -4,30 +4,24 @@ import { v4 as uuid } from "uuid";
 import { revalidatePath } from "next/cache";
 import { db } from "@/drizzle/db";
 import { project } from "@/drizzle/schemas/auth-schema";
-import { createProjectSchema } from "@/lib/zod-schemas"; // move schema outside client
+import { createProjectSchema } from "@/lib/zod-schemas";
+import { parseWithZod } from "@conform-to/zod";
 
-export async function createProject(formData: FormData) {
-  // Convert to an object
-  const raw = Object.fromEntries(formData);
+export async function createProject(previousState: unknown, formData: FormData) {
+  const submission = parseWithZod(formData, { schema: createProjectSchema });
 
-  // Validate with Zod on the server
-  const parsed = createProjectSchema.safeParse(raw);
-  if (!parsed.success) {
-    console.log("❌ ZOD ERROR:", parsed.error.flatten());
-    return { error: parsed.error.flatten() }; // stops insert
+  if (submission.status !== "success") {
+    return submission.reply() as unknown as string[];
   }
-
-  const data = parsed.data;
-
   await db.insert(project).values({
     id: uuid(),
-    name: data.title,
-    description: data.description,
-    keyImage: data.image,
-    github: data.github,
-    live: data.live,
-    techstack: data.techstack,
-    userId: data.userId,
+    name: submission.value.title,
+    description: submission.value.description,
+    keyImage: submission.value.keyImage,
+    github: submission.value.github,
+    live: submission.value.live,
+    techstack: submission.value.techstack,
+    userId: submission.value.userId,
   });
 
   revalidatePath("/dashboard/projects");

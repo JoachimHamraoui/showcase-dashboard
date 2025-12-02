@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -16,11 +16,9 @@ import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import { authClient } from "@/lib/auth-client";
 import { createProject } from "@/lib/actions";
 import { Upload } from "lucide-react";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingSwap } from "@/components/ui/loading-swap";
+import { useForm } from "@conform-to/react";
 import { createProjectSchema } from "@/lib/zod-schemas";
+import { parseWithZod } from "@conform-to/zod";
 
 const technologies = [
   { value: "NextJS", label: "NextJS" },
@@ -42,9 +40,6 @@ const technologies = [
   { value: "Typescript", label: "Typescript" },
 ];
 
-
-type CreateProjectForm = z.infer<typeof createProjectSchema>;
-
 export function CreateProjects() {
   const { data: session } = authClient.useSession();
   const userId = session?.user?.id as string;
@@ -53,20 +48,14 @@ export function CreateProjects() {
   const [imageUrl, setImageUrl] = useState<string>(""); // cloud URL
   const [preview, setPreview] = useState<string | null>(null); // local preview
 
-  const form = useForm<CreateProjectForm>({
-    resolver: zodResolver(createProjectSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      github: "",
-      live: "",
-      techstack: "",
-      image: "",
-      userId: userId || "",
+  const [lastResult, action] = useActionState(createProject, undefined);
+  const [form, fields] = useForm({
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: createProjectSchema });
     },
+    shouldValidate: "onBlur",
+    shouldRevalidate: "onInput",
   });
-
-  const isSubmitting = form.formState.isSubmitting;
 
   // convert file → base64
   const toBase64 = (file: File): Promise<string> =>
@@ -116,17 +105,37 @@ export function CreateProjects() {
 
       <CardContent className="grid gap-4 p-6">
         <form
-          action={async (formData) => {
-            await createProject(formData); // your server action
-            resetFields(); // <-- reset state after submitting
-          }}
+          action={createProject}
+          id={form.id}
+          onSubmit={form.onSubmit}
+          noValidate
           className="grid grid-cols-2 gap-4 gap-y-6"
         >
-          <Input name="title" placeholder="Project name" />
-          <Input name="description" placeholder="Project description" />
+          <Input
+            name={fields.title.name}
+            key={fields.title.name}
+            defaultValue={fields.title.defaultValue}
+            placeholder="Project name"
+          />
+          <Input
+            name={fields.description.name}
+            key={fields.description.name}
+            defaultValue={fields.description.defaultValue}
+            placeholder="Project description"
+          />
 
-          <Input name="github" placeholder="Github link" />
-          <Input name="live" placeholder="Live link" />
+          <Input
+            name={fields.github.name}
+            key={fields.github.name}
+            defaultValue={fields.github.defaultValue}
+            placeholder="Github link"
+          />
+          <Input
+            name={fields.live.name}
+            key={fields.live.name}
+            defaultValue={fields.live.defaultValue}
+            placeholder="Live link"
+          />
 
           {/* Tech stack */}
           <div className="col-span-2">
@@ -141,7 +150,9 @@ export function CreateProjects() {
           {/* Hidden techstack input as JSON array */}
           <input
             type="hidden"
-            name="techstack"
+            name={fields.techstack.name}
+            key={fields.techstack.name}
+            defaultValue={fields.techstack.defaultValue}
             value={JSON.stringify(techStack.map((t) => t.value))}
           />
 
@@ -189,6 +200,9 @@ export function CreateProjects() {
                 accept="image/*"
                 className="hidden"
                 onChange={handleImageUpload}
+                name={fields.keyImage.name}
+                key={fields.keyImage.name}
+                defaultValue={fields.keyImage.defaultValue}
               />
             </label>
 
@@ -211,10 +225,8 @@ export function CreateProjects() {
 
           {userId && <input type="hidden" name="userId" value={userId} />}
 
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            <LoadingSwap isLoading={isSubmitting}>
-              <span>Sign In</span>
-            </LoadingSwap>
+          <Button type="submit" className="w-full">
+            <span>Create</span>
           </Button>
         </form>
       </CardContent>
