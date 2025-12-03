@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import { authClient } from "@/lib/auth-client";
 import { createProject } from "@/lib/actions";
+import { toast } from "sonner";
 import { Upload } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -40,7 +41,6 @@ const technologies = [
   { value: "MySQL", label: "MySQL" },
   { value: "Typescript", label: "Typescript" },
 ];
-
 
 type CreateProjectForm = z.infer<typeof createProjectSchema>;
 
@@ -114,9 +114,27 @@ export function CreateProjects() {
 
       <CardContent className="grid gap-4 p-6">
         <form
-          action={async (formData) => {
-            await createProject(formData); // your server action
-            resetFields(); // <-- reset state after submitting
+          action={async (formData: FormData) => {
+            // Client-side check: ensure image is uploaded
+            if (!imageUrl) {
+              toast.error("Please upload an image before submitting");
+              return;
+            }
+
+            const toastId = toast.loading("Creating project...");
+
+            const result = await createProject(formData);
+
+            if (result?.error) {
+              toast.error("Failed to create project.", { id: toastId });
+              console.log("❌ Create project error:", result.error);
+              return;
+            }
+
+            form.reset();
+            resetFields(); // also reset local state (techStack, imageUrl, preview)
+
+            toast.success("Project created successfully!", { id: toastId });
           }}
           className="grid grid-cols-2 gap-4 gap-y-6"
         >
@@ -190,7 +208,7 @@ export function CreateProjects() {
               />
             </label>
 
-            <input type="hidden" name="image" value={imageUrl} />
+            <input type="hidden" name="keyImage" value={imageUrl} />
           </div>
           <div className="col-span-1">
             {!preview && (
