@@ -1,10 +1,10 @@
 "use server";
 
 import { v4 as uuid } from "uuid";
-import { revalidatePath } from "next/cache";
 import { db } from "@/drizzle/db";
 import { project } from "@/drizzle/schemas/auth-schema";
 import { createProjectSchema } from "@/lib/zod-schemas"; // move schema outside client
+import { revalidatePath } from "next/cache";
 
 export async function createProject(formData: FormData) {
   // Convert to an object
@@ -30,7 +30,7 @@ export async function createProject(formData: FormData) {
     userId: data.userId,
   });
 
-  revalidatePath("/dashboard/projects");
+  revalidatePath("/dashboard");
 
   return { success: true };
 }

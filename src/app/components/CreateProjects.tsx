@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { LoadingSwap } from "@/components/ui/loading-swap";
 import { createProjectSchema } from "@/lib/zod-schemas";
+import { useRouter } from "next/navigation";
 
 const technologies = [
   { value: "NextJS", label: "NextJS" },
@@ -45,12 +46,14 @@ const technologies = [
 type CreateProjectForm = z.infer<typeof createProjectSchema>;
 
 export function CreateProjects() {
+  const router = useRouter();
   const { data: session } = authClient.useSession();
   const userId = session?.user?.id as string;
 
   const [techStack, setTechStack] = useState<Option[]>([]);
   const [imageUrl, setImageUrl] = useState<string>(""); // cloud URL
   const [preview, setPreview] = useState<string | null>(null); // local preview
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const form = useForm<CreateProjectForm>({
     defaultValues: {
@@ -80,6 +83,7 @@ export function CreateProjects() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setIsUploadingImage(true);
     setPreview(URL.createObjectURL(file)); // local preview
 
     const base64 = await toBase64(file);
@@ -91,6 +95,7 @@ export function CreateProjects() {
 
     const data = await res.json();
     setImageUrl(data.url); // store uploaded URL
+    setIsUploadingImage(false);
   }
 
   function resetFields() {
@@ -121,20 +126,25 @@ export function CreateProjects() {
               return;
             }
 
-            const toastId = toast.loading("Creating project...");
-
-            const result = await createProject(formData);
-
-            if (result?.error) {
-              toast.error("Failed to create project.", { id: toastId });
-              console.log("❌ Create project error:", result.error);
-              return;
-            }
-
-            form.reset();
-            resetFields(); // also reset local state (techStack, imageUrl, preview)
-
-            toast.success("Project created successfully!", { id: toastId });
+            await toast.promise(createProject(formData), {
+              loading: "Creating project...",
+              success: (result) => {
+                if (result?.error) {
+                  throw new Error(JSON.stringify(result.error));
+                }
+                if (result?.success) {
+                  form.reset();
+                  resetFields();
+                  return "Project created successfully!";
+                }
+                throw new Error("Unknown error");
+              },
+              error: (err) => {
+                console.log("❌ Create project error:", err.message);
+                return "Failed to create project.";
+              },
+            });
+            router.push("/dashboard");
           }}
           className="grid grid-cols-2 gap-4 gap-y-6"
         >
@@ -227,9 +237,13 @@ export function CreateProjects() {
 
           {userId && <input type="hidden" name="userId" value={userId} />}
 
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            <LoadingSwap isLoading={isSubmitting}>
-              <span>Sign In</span>
+          <Button
+            type="submit"
+            disabled={isSubmitting || isUploadingImage}
+            className="w-full"
+          >
+            <LoadingSwap isLoading={isSubmitting || isUploadingImage}>
+              <span>Create</span>
             </LoadingSwap>
           </Button>
         </form>
