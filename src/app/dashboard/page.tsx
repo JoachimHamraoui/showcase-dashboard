@@ -29,7 +29,7 @@ export default async function Dashboard() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="w-8/10 h-[500px] mt-24">
+      <div className="w-8/9 h-[500px] mt-24">
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">

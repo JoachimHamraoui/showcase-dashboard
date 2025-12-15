@@ -27,19 +27,22 @@ async function fetchUserProjects() {
 
 export async function ProjectsList() {
   const projects = await fetchUserProjects();
+
   return (
-    <div className="max-h-[600px] overflow-y-auto border rounded-lg">
-      <Table>
-        <TableHeader className="bg-muted/10">
+    <div className="max-h-[50vh] overflow-y-auto border rounded-lg">
+      <Table className="table-fixed">
+        <TableHeader>
           <TableRow>
-            <TableHead className="w-[140px]">Thumbnail</TableHead>
-            <TableHead className="w-[180px] font-medium">Title</TableHead>
-            <TableHead className="w-[140px]">Description</TableHead>
-            <TableHead className="w-[360px]">Tech Stack</TableHead>
-            <TableHead>Live</TableHead>
-            <TableHead>Repository</TableHead>
+            <TableHead className="w-1/12">Thumbnail</TableHead>
+            <TableHead className="w-2/12">Title</TableHead>
+            <TableHead className="w-2/12">Description</TableHead>
+            <TableHead className="w-3/12">Tech Stack</TableHead>
+            <TableHead className="w-1/12">Live</TableHead>
+            <TableHead className="w-auto">Repository</TableHead>
+            <TableHead className="w-[90px] text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {projects.length === 0 && (
             <TableRow>
@@ -51,6 +54,7 @@ export async function ProjectsList() {
               </TableCell>
             </TableRow>
           )}
+
           {projects.map((p) => (
             <TableRow key={p.id}>
               <TableCell>
@@ -66,8 +70,10 @@ export async function ProjectsList() {
                   "-"
                 )}
               </TableCell>
-              <TableCell>{p.name}</TableCell>
-              <TableCell>{p.description}</TableCell>
+
+              <TableCell className="truncate">{p.name}</TableCell>
+              <TableCell className="truncate">{p.description || "-"}</TableCell>
+
               <TableCell>
                 {Array.isArray(p.techstack) && p.techstack.length ? (
                   <div className="flex flex-wrap gap-1">
@@ -81,6 +87,7 @@ export async function ProjectsList() {
                   "-"
                 )}
               </TableCell>
+
               <TableCell>
                 {p.live ? (
                   <Link href={p.live} target="_blank" rel="noopener noreferrer">
@@ -94,16 +101,20 @@ export async function ProjectsList() {
                   </Badge>
                 )}
               </TableCell>
+
               <TableCell>
                 {p.github ? (
-                  <Link href={p.github}>
-                    <Badge className="bg-background border border-orange-400 text-orange-400 dark:bg-background dark:text-orange-400 text-semibold px-2">
+                  <Link href={p.github} target="_blank">
+                    <Badge className="bg-background border border-orange-400 text-orange-400 px-2">
                       Repository
                     </Badge>
                   </Link>
                 ) : (
                   "-"
                 )}
+              </TableCell>
+              <TableCell className="text-right">
+                
               </TableCell>
             </TableRow>
           ))}
