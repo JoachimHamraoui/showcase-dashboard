@@ -13,6 +13,7 @@ import { getProjects } from "@/lib/projects";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { DashboardActions } from "./DashboardActions";
+import { SquareArrowOutUpRight } from "lucide-react";
 
 async function fetchUserProjects() {
   try {
@@ -93,11 +94,13 @@ export async function ProjectsList() {
                 {p.live ? (
                   <Link href={p.live} target="_blank" rel="noopener noreferrer">
                     <Badge className="bg-background border border-green-400 text-green-400 px-2 py-1">
+                      <SquareArrowOutUpRight className="inline-block mr-1 size-4" />
                       Live
                     </Badge>
                   </Link>
                 ) : (
                   <Badge className="bg-background border border-gray-600 text-gray-600 px-2 py-1">
+                    <SquareArrowOutUpRight className="inline-block mr-1 size-4" />
                     Live
                   </Badge>
                 )}
@@ -107,6 +110,7 @@ export async function ProjectsList() {
                 {p.github ? (
                   <Link href={p.github} target="_blank">
                     <Badge className="bg-background border border-orange-400 text-orange-400 px-2">
+                      <SquareArrowOutUpRight className="inline-block mr-1 size-4" />
                       Repository
                     </Badge>
                   </Link>
