@@ -12,6 +12,7 @@ import Image from "next/image";
 import { getProjects } from "@/lib/projects";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { DashboardActions } from "./DashboardActions";
 
 async function fetchUserProjects() {
   try {
@@ -114,7 +115,7 @@ export async function ProjectsList() {
                 )}
               </TableCell>
               <TableCell className="text-right">
-                
+                <DashboardActions projectId={p.id} />
               </TableCell>
             </TableRow>
           ))}
