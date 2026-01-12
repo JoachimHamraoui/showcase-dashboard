@@ -8,3 +8,10 @@ export async function getProjects(userId: string) {
     .from(project)
     .where(eq(project.userId, userId));
 }
+
+export async function getProjectById(projectId: string, userId: string) {
+ return await db
+    .select()
+    .from(project)
+    .where((eq(project.id, projectId), eq(project.userId, userId)));
+}

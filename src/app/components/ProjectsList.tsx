@@ -121,7 +121,7 @@ export async function ProjectsList() {
               <TableCell className="text-right pr-2">
                 <DashboardActions projectId={p.id} />
               </TableCell>
-            </TableRow>
+            </TableRow> 
           ))}
         </TableBody>
       </Table>
