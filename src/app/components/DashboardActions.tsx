@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { EditIcon, MoreHorizontal, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 interface iAppProps {
   projectId: string;
@@ -32,8 +33,10 @@ export function DashboardActions({ projectId }: iAppProps) {
           <DropdownMenuItem
             
           >
-            <EditIcon className="mr-2 size-4" />
-            Edit
+            <Link href={`/dashboard/projects/${projectId}/edit`} className="flex items-center w-full">
+              <EditIcon className="mr-2 size-4" />
+              Edit
+            </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem
