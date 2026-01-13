@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import { authClient } from "@/lib/auth-client";
 import { createProject } from "@/lib/actions";
@@ -148,14 +149,35 @@ export function CreateProjects() {
           }}
           className="grid grid-cols-2 gap-4 gap-y-6"
         >
-          <Input name="title" placeholder="Project name" />
-          <Input name="description" placeholder="Project description" />
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="title">Project Name</Label>
+            <Input id="title" name="title" placeholder="My awesome project" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="description">Description</Label>
+            <Input
+              id="description"
+              name="description"
+              placeholder="A brief description"
+            />
+          </div>
 
-          <Input name="github" placeholder="Github link" />
-          <Input name="live" placeholder="Live link" />
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="github">GitHub Link</Label>
+            <Input
+              id="github"
+              name="github"
+              placeholder="https://github.com/..."
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="live">Live Link (Optional)</Label>
+            <Input id="live" name="live" placeholder="https://..." />
+          </div>
 
           {/* Tech stack */}
-          <div className="col-span-2">
+          <div className="col-span-2 flex flex-col gap-2">
+            <Label>Tech Stack</Label>
             <MultipleSelector
               defaultOptions={technologies}
               value={techStack}
@@ -173,6 +195,7 @@ export function CreateProjects() {
 
           {/* Image uploader */}
           <div className="col-span-1 flex flex-col gap-2">
+            <Label>Project Image</Label>
             <label
               htmlFor="file-upload"
               onDragOver={(e) => {
