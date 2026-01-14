@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { deleteProject } from "@/lib/actions";
-import { DeleteIcon, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
