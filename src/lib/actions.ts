@@ -67,3 +67,8 @@ export async function updateProject(formData: FormData) {
 
   return { success: true };
 }
+
+export async function deleteProject(projectId: string) {
+  await db.delete(project).where(eq(project.id, projectId));
+  revalidatePath("/dashboard");
+} 
