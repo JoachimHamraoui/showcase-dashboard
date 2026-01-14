@@ -42,8 +42,10 @@ export function DashboardActions({ projectId }: iAppProps) {
           <DropdownMenuItem
             
           >
-            <Trash2 className="mr-2 size-4" />
-            Delete
+            <Link href={`/dashboard/projects/${projectId}/delete`} className="flex items-center w-full">
+              <Trash2 className="mr-2 size-4" />
+              Delete
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -69,6 +69,11 @@ export async function updateProject(formData: FormData) {
 }
 
 export async function deleteProject(projectId: string) {
-  await db.delete(project).where(eq(project.id, projectId));
-  revalidatePath("/dashboard");
-} 
+  try {
+    await db.delete(project).where(eq(project.id, projectId));
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: "Failed to delete project" };
+  }
+}
