@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import Link from "next/link";
+import { redirect } from "next/navigation";
+import { NavBar } from "./components/NavBar";
 
 export default function Home() {
   const { data: session, isPending: loading } = authClient.useSession();
@@ -17,29 +17,14 @@ export default function Home() {
     );
   }
   return (
-    <div className="my-6 px-4 max-w-md mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-0">
         {session == null ? (
-          <>
-            <h1 className="text-3xl font-bold">Welcome</h1>
-            <Button asChild size="lg" variant="link">
-              <Link href="/auth/login">Log in / Sign up</Link>
-            </Button>
-          </>
+          <main className="w-full">
+            <NavBar />
+          </main>
         ) : (
-          <>
-            {/* <h1 className="text-3xl font-bold">Welcome {session.user.name}</h1>
-            <Button
-              size="lg"
-              variant="destructive"
-              onClick={() => authClient.signOut()}
-            >
-              Log out
-            </Button> */}
-            <div className="">
-
-            </div>
-          </>
+          redirect("/dashboard")
         )}
       </div>
     </div>
