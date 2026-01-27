@@ -3,6 +3,7 @@
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { NavBar } from "./components/NavBar";
+import { Hero } from "./components/Hero";
 
 export default function Home() {
   const { data: session, isPending: loading } = authClient.useSession();
@@ -22,6 +23,7 @@ export default function Home() {
         {session == null ? (
           <main className="w-full">
             <NavBar />
+            <Hero />
           </main>
         ) : (
           redirect("/dashboard")
