@@ -4,6 +4,7 @@ import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { NavBar } from "./components/NavBar";
 import { Hero } from "./components/Hero";
+import { UpdateLog } from "./components/UpdateLog";
 
 export default function Home() {
   const { data: session, isPending: loading } = authClient.useSession();
@@ -24,6 +25,7 @@ export default function Home() {
           <main className="w-full">
             <NavBar />
             <Hero />
+            <UpdateLog />
           </main>
         ) : (
           redirect("/dashboard")
