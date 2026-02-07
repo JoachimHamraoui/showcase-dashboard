@@ -7,7 +7,7 @@ import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button
 export function Hero() {
   return (
     <div className="w-full h-full relative flex flex-col items-center justify-center py-12 lg:py-32">
-        <AnimatedShinyText>✨ Introducing Alpha v1.0</AnimatedShinyText>
+        <AnimatedShinyText>✨ Introducing Alpha V0.1.0</AnimatedShinyText>
       <h1 className="-mt-2 font-black text-4xl sm:text-6xl md:text-7xl lg:text-9xl tracking-tighter">
         <AuroraText speed={1} colors={["#FE8C00", "#F83600"]}>
           DSHBRD.

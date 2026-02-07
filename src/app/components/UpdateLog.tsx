@@ -26,7 +26,7 @@ export function UpdateLog() {
           <Accordion type="multiple" className="w-full">
             <AccordionItem value="Alpha V1.0.0">
               <AccordionTrigger>
-                Alpha V1.0.0 - Initial Release
+                Alpha V0.1.0 - Initial Release
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground text-left">
                   Alpha release of DSHBRD. The first version of the easy Portfolio project management tool for starting developers.
