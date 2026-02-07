@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { NavBar } from "./components/NavBar";
 import { Hero } from "./components/Hero";
 import { UpdateLog } from "./components/UpdateLog";
+import { Footer } from "./components/Footer";
 
 export default function Home() {
   const { data: session, isPending: loading } = authClient.useSession();
@@ -26,6 +27,7 @@ export default function Home() {
             <NavBar />
             <Hero />
             <UpdateLog />
+            <Footer />
           </main>
         ) : (
           redirect("/dashboard")
