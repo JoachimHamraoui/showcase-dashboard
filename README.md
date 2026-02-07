@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Showcase Dashboard
 
-## Getting Started
+A Next.js app for managing and showcasing projects with authentication, a dashboard, and image uploads.
 
-First, run the development server:
+## Features
+
+- Auth with email/password and Google OAuth (Better Auth)
+- Project dashboard with create/edit/delete flows
+- Cloudinary image upload endpoint
+- Bot/rate‑limit protection for auth routes (Arcjet)
+- Drizzle ORM with Postgres
+
+## Tech stack
+
+- Next.js (App Router) + React 19
+- TypeScript + Tailwind CSS
+- Drizzle ORM + Postgres
+- Better Auth
+- Cloudinary
+- Radix UI
+
+## Getting started
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` – start dev server
+- `npm run build` – build for production
+- `npm run start` – run production server
+- `npm run lint` – lint
+- `npm run db:generate` – generate migrations
+- `npm run db:migrate` – run migrations
+- `npm run db:push` – push schema to DB
+- `npm run db:studio` – open Drizzle Studio
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+Create a `.env` file with:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+DATABASE_URL=
+BETTER_AUTH_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+ARCJET_API_KEY=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+# Optional in production
+VERCEL_URL=
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## App routes
 
-## Deploy on Vercel
+- `/` public landing page
+- `/auth/login` sign in / sign up
+- `/dashboard` projects dashboard (requires auth)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
+
+## License
+
+MIT — see [LICENSE](LICENSE).
