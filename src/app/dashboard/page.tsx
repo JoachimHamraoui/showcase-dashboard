@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { ProjectsList } from "../components/ProjectsList";
@@ -11,6 +12,10 @@ import {
 import { PlusIcon } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "DSHBRD. - Dashboard",
+};
 
 export default async function Dashboard() {
   const headersList = await headers();
